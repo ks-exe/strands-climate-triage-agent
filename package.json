@@ -1,0 +1,34 @@
+{
+  "name": "data-quality-inspector",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc --noEmit && vite build",
+    "cdk": "cdk",
+    "synth": "npm run build && cdk synth --context region=us-east-2",
+    "deploy": "npm run build && cdk deploy DataQualityInspectorStack --context region=us-east-2 --require-approval never",
+    "destroy": "cdk destroy DataQualityInspectorStack"
+  },
+  "dependencies": {
+    "@aws-sdk/client-bedrock-runtime": "^3.1095.0",
+    "aws-cdk-lib": "^2.262.1",
+    "constructs": "^10.5.0",
+    "lucide-react": "^0.475.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.147",
+    "@types/node": "^22.10.5",
+    "@types/react": "^19.0.7",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "aws-cdk": "2.1133.0",
+    "esbuild": "^0.25.12",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3",
+    "vite": "^6.0.7"
+  }
+}

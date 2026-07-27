@@ -1,0 +1,34 @@
+# Dependencies and build output
+node_modules/
+dist/
+cdk.out/
+
+# Local runtime logs
+*.log
+debug.log
+vite-server.log
+vite-server.err.log
+
+# Local environment and credential material
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+credentials
+config
+
+# Local/tooling files that should not be redistributed
+.agents/
+.codex/
+AGENTS.md
+aws-beta-skill.md
+start-codex.ps1
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

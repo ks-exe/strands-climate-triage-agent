@@ -1,0 +1,8 @@
+customer_id,name,email,signup_date,plan,monthly_spend,active
+1,Asha Khan,asha@example.com,2026-01-10,Pro,49.00,true
+2,Noah Reed,noah@example.com,2026-02-12,Basic,19.00,true
+3,Mina Patel,,2026-02-16,Pro,49.00,true
+4,Noah Reed,noah@example.com,2026-02-12,Basic,19.00,true
+5,Ela Chen,ela@example.com,not-a-date,Enterprise,249.00,yes
+6,Omar Ali,omar@example.com,2026-03-20,,89.00,false
+7,Lina Park,lina@example.com,2026-04-01,Basic,N/A,true
