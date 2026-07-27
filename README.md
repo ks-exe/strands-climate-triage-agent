@@ -10,6 +10,14 @@ Open the deployed application:
 https://u97j0opdi9.execute-api.us-east-2.amazonaws.com
 ```
 
+## Screenshots
+
+<img src="docs/screenshots/dashboard-overview.png" alt="Data Quality Inspector dashboard overview" width="100%" />
+
+| Missing Values Analysis | Column Profile |
+| --- | --- |
+| <img src="docs/screenshots/missing-values.png" alt="Missing values by column chart" width="100%" /> | <img src="docs/screenshots/column-profile.png" alt="Column profile table with detected data types" width="100%" /> |
+
 ## Features
 
 - CSV upload from the browser

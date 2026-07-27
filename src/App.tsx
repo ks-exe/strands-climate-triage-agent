@@ -159,7 +159,7 @@ export function App() {
         <div className="service-list">
           <ServicePill label="Lambda API" />
           <ServicePill label="Bedrock summary" />
-          <ServicePill label="CloudFront delivery" />
+          <ServicePill label="API Gateway delivery" />
         </div>
       </aside>
 
