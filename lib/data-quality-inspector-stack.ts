@@ -17,8 +17,14 @@ export class DataQualityInspectorStack extends Stack {
     super(scope, id, props);
     const stackDir = path.dirname(fileURLToPath(import.meta.url));
 
-    const bedrockModelId =
-      this.node.tryGetContext("bedrockModelId")?.toString() ?? "amazon.nova-micro-v1:0";
+    // Model the Strands agent uses. Default is Amazon Nova Lite (good tool use,
+    // fast, and in the Nova family already enabled for this account). Override
+    // with -c agentModelId=anthropic.claude-3-5-haiku-20241022-v1:0 for the most
+    // reliable tool calling if Claude access is enabled.
+    const agentModelId =
+      this.node.tryGetContext("agentModelId")?.toString() ??
+      this.node.tryGetContext("bedrockModelId")?.toString() ??
+      "amazon.nova-lite-v1:0";
     const bedrockRegion = this.node.tryGetContext("bedrockRegion")?.toString() ?? "us-east-1";
 
     const inspectorFunction = new nodejs.NodejsFunction(this, "InspectorFunction", {
@@ -26,12 +32,12 @@ export class DataQualityInspectorStack extends Stack {
       handler: "handler",
       runtime: lambda.Runtime.NODEJS_22_X,
       architecture: lambda.Architecture.ARM_64,
-      timeout: Duration.seconds(25),
-      memorySize: 512,
+      timeout: Duration.seconds(30),
+      memorySize: 1024,
       logRetention: logs.RetentionDays.ONE_WEEK,
       environment: {
         BEDROCK_REGION: bedrockRegion,
-        BEDROCK_MODEL_ID: bedrockModelId
+        AGENT_MODEL_ID: agentModelId
       },
       bundling: {
         minify: true,
@@ -41,9 +47,10 @@ export class DataQualityInspectorStack extends Stack {
       }
     });
 
+    // Strands BedrockModel uses the Converse / ConverseStream API.
     inspectorFunction.addToRolePolicy(
       new iam.PolicyStatement({
-        actions: ["bedrock:InvokeModel"],
+        actions: ["bedrock:InvokeModel", "bedrock:Converse", "bedrock:ConverseStream"],
         resources: [
           Stack.of(this).formatArn({
             service: "bedrock",
@@ -113,24 +120,10 @@ export class DataQualityInspectorStack extends Stack {
       destinationBucket: siteBucket
     });
 
-    new cdk.CfnOutput(this, "ApplicationUrl", {
-      value: httpApi.apiEndpoint
-    });
-
-    new cdk.CfnOutput(this, "ApiEndpoint", {
-      value: httpApi.apiEndpoint
-    });
-
-    new cdk.CfnOutput(this, "StaticWebsiteUrl", {
-      value: siteBucket.bucketWebsiteUrl
-    });
-
-    new cdk.CfnOutput(this, "BedrockModel", {
-      value: bedrockModelId
-    });
-
-    new cdk.CfnOutput(this, "BedrockRegion", {
-      value: bedrockRegion
-    });
+    new cdk.CfnOutput(this, "ApplicationUrl", { value: httpApi.apiEndpoint });
+    new cdk.CfnOutput(this, "ApiEndpoint", { value: httpApi.apiEndpoint });
+    new cdk.CfnOutput(this, "StaticWebsiteUrl", { value: siteBucket.bucketWebsiteUrl });
+    new cdk.CfnOutput(this, "AgentModel", { value: agentModelId });
+    new cdk.CfnOutput(this, "BedrockRegion", { value: bedrockRegion });
   }
 }
